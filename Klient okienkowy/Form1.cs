@@ -21,23 +21,39 @@ namespace Klient_okienkowy
         public Form1()
         {
             InitializeComponent();
-            Client.client = new TcpClient(Client.hostname, Client.port);
-            socketip = Client.client.Client.LocalEndPoint.ToString();
-            nick = socketip;
+            try
+            {
+                Client.client = new TcpClient(Client.hostname, Client.port);
+                socketip = Client.client.Client.LocalEndPoint.ToString();
+                nick = socketip;
+                Task RecivedMessageTask = new Task(Client.ReciveMessageAction);
+                RecivedMessageTask.Start();
+                //Thread t = new Thread(reciveDataButton.PerformClick);
+                //t.Start();
+            }
+            catch (System.Net.Sockets.SocketException)
+            {
+                MessageBox.Show("Serwer wylaczony");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                Environment.Exit(0);
+            };
+            
         }
 
         private void talkText_TextChanged(object sender, EventArgs e)
         {
-            //tbData.AppendText(str);
 
         }
 
         private void Sendbtn_Click(object sender, EventArgs e)
         {
             string message = SendMessagetxt.Text;
-            txtRecived=Client.Connect(Client.client, Client.hostname, "ID: " + nick + " " + message);
-            txtRecived += '\n';
-            TalkBox.AppendText(txtRecived);
+            Client.Connect(Client.client, Client.hostname, message);
+            //te 2 linijki gdzies indziej
+
             SendMessagetxt.Clear();
         }
 
@@ -54,6 +70,16 @@ namespace Klient_okienkowy
         {
             Client.stream.Close();
             Client.client.Close();
+            Client.client.Client.Close();
         }
+
+        private void reciveDataButton_Click(object sender, EventArgs e)
+        {
+            //MessageBox.Show(Client.recivedData);
+            txtRecived += '\n';
+            TalkBox.AppendText(txtRecived);
+            Thread.Sleep(1000);
+        }
+
     }
 }
