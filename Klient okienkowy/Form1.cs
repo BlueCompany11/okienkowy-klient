@@ -18,6 +18,18 @@ namespace Klient_okienkowy
         string txtRecived;
         string socketip;
         string nick;
+
+        void child_OnChildTextChanged(object sender, EventArgs e)
+        {
+            Console.WriteLine("Wywolanie funkcji");
+            TalkBox.AppendText((string)sender+'\n');
+        }
+
+        public TextBox PlaceForText
+        {
+            get { return TalkBox; }
+        }
+
         public Form1()
         {
             InitializeComponent();
@@ -28,24 +40,22 @@ namespace Klient_okienkowy
                 nick = socketip;
                 Task RecivedMessageTask = new Task(Client.ReciveMessageAction);
                 RecivedMessageTask.Start();
+                //do wypisywania wiadomosci
+                Client child = new Client();
+                child.OnChildTextChanged += new EventHandler(child_OnChildTextChanged);
                 //Thread t = new Thread(reciveDataButton.PerformClick);
                 //t.Start();
             }
             catch (System.Net.Sockets.SocketException)
             {
                 MessageBox.Show("Serwer wylaczony");
+                Environment.Exit(0);
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.ToString());
                 Environment.Exit(0);
             };
-            
-        }
-
-        private void talkText_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void Sendbtn_Click(object sender, EventArgs e)
@@ -57,28 +67,11 @@ namespace Klient_okienkowy
             SendMessagetxt.Clear();
         }
 
-        private void SendMessagetxt_TextChanged(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void TalkBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
         private void Form1_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Client.stream.Close();
             Client.client.Close();
             Client.client.Client.Close();
-        }
-
-        private void reciveDataButton_Click(object sender, EventArgs e)
-        {
-            //MessageBox.Show(Client.recivedData);
-            txtRecived += '\n';
-            TalkBox.AppendText(txtRecived);
-            Thread.Sleep(1000);
         }
 
     }

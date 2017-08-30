@@ -41,7 +41,6 @@
             this.TalkBox.Name = "TalkBox";
             this.TalkBox.Size = new System.Drawing.Size(614, 461);
             this.TalkBox.TabIndex = 0;
-            this.TalkBox.TextChanged += new System.EventHandler(this.TalkBox_TextChanged);
             // 
             // SendMessagetxt
             // 
@@ -50,7 +49,6 @@
             this.SendMessagetxt.Name = "SendMessagetxt";
             this.SendMessagetxt.Size = new System.Drawing.Size(456, 48);
             this.SendMessagetxt.TabIndex = 1;
-            this.SendMessagetxt.TextChanged += new System.EventHandler(this.SendMessagetxt_TextChanged);
             // 
             // Sendbtn
             // 
@@ -64,13 +62,10 @@
             // 
             // reciveDataButton
             // 
-            this.reciveDataButton.Location = new System.Drawing.Point(538, 590);
+            this.reciveDataButton.Location = new System.Drawing.Point(0, 0);
             this.reciveDataButton.Name = "reciveDataButton";
-            this.reciveDataButton.Size = new System.Drawing.Size(75, 40);
-            this.reciveDataButton.TabIndex = 3;
-            this.reciveDataButton.Text = "Recive Data";
-            this.reciveDataButton.UseVisualStyleBackColor = true;
-            this.reciveDataButton.Click += new System.EventHandler(this.reciveDataButton_Click);
+            this.reciveDataButton.Size = new System.Drawing.Size(75, 23);
+            this.reciveDataButton.TabIndex = 0;
             // 
             // Form1
             // 
