@@ -17,7 +17,8 @@ namespace Klient_okienkowy
     {
         string socketip;
         string nick;
-
+        public static bool ifInicialised = false;
+        public static bool isIpSet = false;
         public TextBox PlaceForText
         {
             get { return TalkBox; }
@@ -25,7 +26,14 @@ namespace Klient_okienkowy
 
         public Form1()
         {
-            CheckForIllegalCrossThreadCalls = false;
+            ServerOptionsForm x = new ServerOptionsForm();
+            x.Show();
+            this.StartPosition = FormStartPosition.CenterScreen;
+            x.StartPosition = FormStartPosition.CenterScreen;
+        }
+
+        public void SetValues()
+        {
             Client accesGiver = new Client(this);
             InitializeComponent();
             try
@@ -33,7 +41,7 @@ namespace Klient_okienkowy
                 Client.client = new TcpClient(Client.hostname, Client.port);
                 socketip = Client.client.Client.LocalEndPoint.ToString();
                 nick = socketip;
-                Task RecivedMessageTask = new Task(()=>Client.ReciveMessageAction(accesGiver));
+                Task RecivedMessageTask = new Task(() => Client.ReciveMessageAction(accesGiver));
                 RecivedMessageTask.Start();
                 Sendbtn.PerformClick();
                 Client.stream = Client.client.GetStream();
@@ -66,13 +74,12 @@ namespace Klient_okienkowy
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Client.hostname = 
-            enterButton.Text = Client.hostname;
+
         }
 
-        private void enterButton_Click(object sender, EventArgs e)
+        private void toServerOptionsButton_Click(object sender, EventArgs e)
         {
-            Client.hostname = enterButton.Text;
+
         }
     }
 }
