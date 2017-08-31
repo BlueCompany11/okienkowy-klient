@@ -1,17 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Klient_okienkowy
 {
-    public partial class ServerOptionsForm:Form
+    public partial class ServerOptionsForm : Form
     {
         private Button enterButton;
         private Label label1;
         private TextBox ipTextBox;
+        IPAddress[] ipv4Addresses = Array.FindAll(
+Dns.GetHostEntry(string.Empty).AddressList,
+a => a.AddressFamily == AddressFamily.InterNetwork);
+        public ServerOptionsForm()
+        {
+            InitializeComponent();
+        }
 
         private void InitializeComponent()
         {
@@ -45,6 +54,7 @@ namespace Klient_okienkowy
             this.ipTextBox.Name = "ipTextBox";
             this.ipTextBox.Size = new System.Drawing.Size(218, 20);
             this.ipTextBox.TabIndex = 6;
+            ipTextBox.Text = ipv4Addresses[0].ToString();
             // 
             // ServerOptionsForm
             // 
@@ -61,9 +71,17 @@ namespace Klient_okienkowy
 
         private void ServerOptionsForm_Load(object sender, EventArgs e)
         {
-            Client.hostname= "172.17.1.168";
+            IPAddress[] ipv4Addresses = Array.FindAll(
+                    Dns.GetHostEntry(string.Empty).AddressList,
+                    a => a.AddressFamily == AddressFamily.InterNetwork);
+            Client.hostname = ipv4Addresses[0].ToString();
         }
         //DO POPRAWY
+        /// <summary>
+        /// Logic for pressed enter ip button.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void enterButton_Click(object sender, EventArgs e)
         {
             //Control[] q = this.Controls.Find("Form1",true); //jest to w zlej kolekcji, trzeba to napisac w form1 i dawac jako referencje
@@ -77,18 +95,17 @@ namespace Klient_okienkowy
                 MessageBox.Show("Invalid IP");
                 return;
             }
-            if(ipTextBox.Text == null)    //do testowania
-            {
-                Client.hostname = "172.17.1.168";
-            }
             else
             {
                 Client.hostname = ipTextBox.Text;
             }
+            this.Close();
             Form1 w;
-            Form x = Application.OpenForms[1];
+            Form x = Application.OpenForms[0];
             w = (Form1)x;
             w.SetValues();
+
         }
+
     }
 }

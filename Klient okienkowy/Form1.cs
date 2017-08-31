@@ -28,8 +28,8 @@ namespace Klient_okienkowy
         {
             ServerOptionsForm x = new ServerOptionsForm();
             x.Show();
-            this.StartPosition = FormStartPosition.CenterScreen;
-            x.StartPosition = FormStartPosition.CenterScreen;
+            this.Location = new Point(400, 400);
+            x.SetDesktopLocation(this.Location.X + this.Size.Width, this.Location.Y);
         }
 
         public void SetValues()
@@ -77,9 +77,10 @@ namespace Klient_okienkowy
 
         }
 
-        private void toServerOptionsButton_Click(object sender, EventArgs e)
+        private void historyButton_Click(object sender, EventArgs e)
         {
-
+            Logs x = new Logs();
+            x.Show();
         }
     }
 }

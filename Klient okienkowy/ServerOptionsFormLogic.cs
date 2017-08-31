@@ -9,13 +9,22 @@ namespace Klient_okienkowy
 {
     public partial class ServerOptionsForm:Form
     {
-        public ServerOptionsForm()
+        private bool CheckIfIpIsCorrect(string ipString)
         {
-            InitializeComponent();
-        }
-        private bool CheckIfIpIsCorrect(string IP)  //do uzuplenienia
-        {
-            return true;
+            if (String.IsNullOrWhiteSpace(ipString))
+            {
+                return false;
+            }
+
+            string[] splitValues = ipString.Split('.');
+            if (splitValues.Length != 4)
+            {
+                return false;
+            }
+
+            byte tempForParsing;
+
+            return splitValues.All(r => byte.TryParse(r, out tempForParsing));
         }
     }
 }
