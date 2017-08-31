@@ -49,7 +49,6 @@ namespace Klient_okienkowy
             this.fromDateTextBox.Name = "fromDateTextBox";
             this.fromDateTextBox.Size = new System.Drawing.Size(280, 20);
             this.fromDateTextBox.TabIndex = 1;
-            this.fromDateTextBox.Text = DateTime.Now.ToString();
             // 
             // label1
             // 
@@ -75,7 +74,6 @@ namespace Klient_okienkowy
             this.toDateTextBox.Name = "toDateTextBox";
             this.toDateTextBox.Size = new System.Drawing.Size(280, 20);
             this.toDateTextBox.TabIndex = 4;
-            this.toDateTextBox.Text = DateTime.Now.ToString();
             // 
             // label3
             // 
@@ -119,14 +117,15 @@ namespace Klient_okienkowy
 
         private void getDataButton_Click(object sender, EventArgs e)
         {
-            //DateTime from = DateTime.Now;
-            //DateTime to=DateTime.Now;
-            string from="";
-            string to = "";
+            DateTime from=new DateTime(); ;
+            DateTime to=new DateTime(); ;
+            //string from="";
+            //string to = "";
+            //potrzebne te converty, bo inaczej trzeba by pisac dodatkowe funckje na sprawdzanie czy poprawne dane zostaly wpisane
             try
             {
-                //from = Convert.ToDateTime(fromDateTextBox.Text);
-                from = fromDateTextBox.Text;
+                from = Convert.ToDateTime(fromDateTextBox.Text);
+                //from = fromDateTextBox.Text;
             }
             catch (FormatException)
             {
@@ -134,17 +133,25 @@ namespace Klient_okienkowy
             }
             try
             {
-                //to = Convert.ToDateTime(toDateTextBox.Text);
-                to = fromDateTextBox.Text;
+                to = Convert.ToDateTime(toDateTextBox.Text);
+                //to = fromDateTextBox.Text;
             }
             catch (FormatException)
             {
                 MessageBox.Show("Label To has wrong format");
             }
             string queryLogs;
-            queryLogs = "$MsG_"+from.ToString()+"_"+to.ToString()+"$";
-            MessageBox.Show(queryLogs);
-            Client.Connect(Client.client, Client.hostname, queryLogs);
+            DateTime temp = new DateTime();
+            if (from != temp && to != temp)
+            {
+                queryLogs = "$MsG_" + from.ToString() + "_" + to.ToString() + "$";
+                MessageBox.Show(queryLogs);
+                Client.Connect(Client.client, Client.hostname, queryLogs);
+            }
+            else
+            {
+                return;
+            }
         }
 
     }
